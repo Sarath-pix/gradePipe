@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grade-calc-deployment
+  labels:
+    app: grade-calc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grade-calc
+  template:
+    metadata:
+      labels:
+        app: grade-calc
+    spec:
+      containers:
+      - name: grade-calc
+        image: sarathvenkat07/grade-calculator-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
